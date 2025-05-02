@@ -17,7 +17,6 @@ app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
 }));
 
-app.use(express.static('public'));
 
 // cuando se levante el servidor hacer un hello world
 app.get('/', (req, res) => {
@@ -25,10 +24,12 @@ app.get('/', (req, res) => {
 })
 
 db.sequelize.sync({
-    force: true // drop tables and recreate
+   //force: true // drop tables and recreate
 }).then(() => {
     console.log("db resync");
 });
 
+app.use(express.static('public'));
+require('./routes')(app);
 
 

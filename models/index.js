@@ -33,13 +33,13 @@ db.artist_genre = require('./artist_genre.js')(sequelize, Sequelize);
 db.artist.belongsToMany(db.genre, {
     through: db.artist_genre,
     foreignKey: 'artist_id',
-    as: 'genre',
+    as: 'genres',
 })
 
 db.genre.belongsToMany(db.artist, {
     through: db.artist_genre,
     foreignKey: 'genre_id',
-    as: 'artist'
+    as: 'artists'
 })
 
 db.artist.hasMany(db.album,{ foreignKey: 'artist_id', as: 'album' });
