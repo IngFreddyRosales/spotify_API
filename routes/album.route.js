@@ -5,6 +5,7 @@ module.exports = app => {
     router.post("/createAlbum/:artistId", controller.createAlbum)
     router.get("/findAlbum/:id", controller.findAlbumById);
     router.get("/findAllAlbums", controller.findAllAlbums);
+    router.get("/findAllAlbumsByArtist/:artistId", controller.findAlbumsByArtistId);
     router.delete("/deleteAlbum/:id", controller.deleteAlbum);
     router.patch("/updateAlbum/:id", controller.patchAlbum);
 

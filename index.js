@@ -9,6 +9,14 @@ const db = require('./models/index.js');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Configurar CORS
+var corsOptions = {
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions));
+
 app.listen(port, function () {
     console.log('Ingrese a http://localhost:3000')
 })
@@ -30,6 +38,7 @@ db.sequelize.sync({
 });
 
 app.use(express.static('public'));
+app.use('/static', express.static('public'));
 require('./routes')(app);
 
 

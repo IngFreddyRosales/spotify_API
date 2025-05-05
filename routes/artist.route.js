@@ -6,8 +6,9 @@ module.exports = app => {
     router.get("/getAllArtists", controller.getAllArtists);
     router.get("/getArtistById/:id", controller.findArtistById);
     router.delete("/deleteArtist/:id", controller.deleteArtist);
-    router.patch("/patchArtist/:id", controller.patchArtist); 
+    router.patch("/patchArtist/:id", controller.patchArtist);
+    router.get("/getAlbumsAndSongsByArtist/:artistId", controller.getAlbumsAndSongsByArtistId); 
 
-    app.use("/public", router); // public is the folder where the images are stored
+    app.use("/public", router); 
 
 }

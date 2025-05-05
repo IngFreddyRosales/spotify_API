@@ -26,7 +26,7 @@ exports.createAlbum = async (req, res) => {
             artist_id: artistId
         });
     
-        const imagePath = path.join(__dirname, '../public/images/album', `${album.id}.jpg`);
+        const imagePath = path.join(__dirname, '../public/images/albums', `${album.id}.jpg`);
         image.mv(imagePath, async (err) => {
             if (err){
                 console.log("Error al subir la imagen", err);
@@ -102,7 +102,7 @@ exports.deleteAlbum = async (req, res) => {
         }
 
         // Eliminar la imagen del album del servidor
-        const imagePath = path.join(__dirname, '../public/images/album', `${album.id}.jpg`);
+        const imagePath = path.join(__dirname, '../public/images/albums', `${album.id}.jpg`);
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath); // Eliminar el archivo
             console.log(`Archivo eliminado: ${imagePath}`);
@@ -135,7 +135,7 @@ exports.patchAlbum = async (req, res) => {
         if (release_date) { album.release_date = release_date; }
 
         if (image) {
-            const imagePath = path.join(__dirname, '../public/images/album', `${album.id}.jpg`);
+            const imagePath = path.join(__dirname, '../public/images/albums', `${album.id}.jpg`);
             image.mv(imagePath, async (err) => {
                 if (err) {
                     console.log("Error al subir la imagen", err);
@@ -162,3 +162,23 @@ exports.patchAlbum = async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar el album' });
     }
 }
+
+exports.findAlbumsByArtistId = async (req, res) => {
+    try {
+        const { artistId } = req.params; // Obtener el ID del artista desde los parámetros de la URL
+        const albums = await Album.findAll({
+            where: { artist_id: artistId }, // Filtrar por el ID del artista
+            include: [{ model: Artist, as: 'artist' }] // Incluir información del artista
+        });
+
+        if (!albums || albums.length === 0) {
+            return res.status(404).json({ message: 'No se encontraron álbumes para este artista' });
+        }
+
+        res.status(200).json(albums);
+        console.log("Álbumes encontrados para el artista:", albums);
+    } catch (error) {
+        console.error("Error al buscar los álbumes del artista", error);
+        res.status(500).json({ message: 'Error al buscar los álbumes del artista' });
+    }
+};
